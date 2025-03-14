@@ -2,6 +2,8 @@ package main
 
 import (
 	"Users/glebmakotchenko/Documents/vscode/url-shortener/internal/config"
+	"Users/glebmakotchenko/Documents/vscode/url-shortener/internal/lib/logger/sl"
+	"Users/glebmakotchenko/Documents/vscode/url-shortener/internal/storage/sqlite"
 	"log/slog"
 	"os"
 )
@@ -20,7 +22,14 @@ func main() {
 
 	log.Info("starting url-shortener", slog.String("env", cfg.Env))
 	log.Debug("debug messages are enabled")
-	log.Info("test")
+
+	storage, err := sqlite.New(cfg.StoragePath)
+	if err != nil {
+		log.Error("failed to init storage", sl.Err(err))
+		os.Exit(1)
+	}
+
+	_ = storage
 }
 
 func setupLogger(env string) *slog.Logger {
