@@ -29,6 +29,13 @@ func main() {
 		os.Exit(1)
 	}
 
+	/* url, err := storage.GetURL("google")
+	if err != nil {
+		log.Error("failed to get url", sl.Err(err))
+	}
+
+	fmt.Println(url) */
+
 	_ = storage
 }
 
