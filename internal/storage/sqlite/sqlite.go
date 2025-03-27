@@ -1,10 +1,10 @@
 package sqlite
 
 import (
-	"Users/glebmakotchenko/Documents/vscode/url-shortener/internal/storage"
 	"database/sql"
 	"errors"
 	"fmt"
+	"url-shortener/internal/storage"
 
 	"github.com/mattn/go-sqlite3"
 )
