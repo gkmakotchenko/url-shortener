@@ -23,7 +23,6 @@ const (
 )
 
 func main() {
-	os.Setenv("CONFIG_PATH", "/root/apps/url-shortener/config/prod.yaml")
 	cfg := config.MustLoad()
 
 	log := setupLogger(cfg.Env)
