@@ -24,7 +24,6 @@ const (
 )
 
 func main() {
-	os.Setenv("CONFIG_PATH", "../../config/local.yaml")
 	cfg := config.MustLoad()
 
 	log := setupLogger(cfg.Env)
