@@ -6,6 +6,7 @@ import (
 	"os"
 	"url-shortener/internal/config"
 	"url-shortener/internal/http-server/handlers/redirect"
+	"url-shortener/internal/http-server/handlers/url/delete"
 	"url-shortener/internal/http-server/handlers/url/save"
 	mwLogger "url-shortener/internal/http-server/middleware/logger"
 	"url-shortener/internal/lib/logger/handlers/slogpretty"
@@ -23,6 +24,7 @@ const (
 )
 
 func main() {
+	os.Setenv("CONFIG_PATH", "../../config/local.yaml")
 	cfg := config.MustLoad()
 
 	log := setupLogger(cfg.Env)
@@ -49,6 +51,7 @@ func main() {
 			cfg.HTTPServer.User: cfg.HTTPServer.Password,
 		}))
 		r.Post("/save", save.New(log, storage))
+		r.Delete("/delete/{alias}", delete.New(log, storage))
 	})
 
 	router.Get("/{alias}", redirect.New(log, storage))
