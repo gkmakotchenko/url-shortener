@@ -13,6 +13,11 @@ type Storage struct {
 	db *sql.DB
 }
 
+type URL struct {
+	Alias string `json:"alias"`
+	URL   string `json:"string`
+}
+
 func New(storagePath string) (*Storage, error) {
 	const op = "storage.sqlite.New"
 
@@ -84,6 +89,36 @@ func (s *Storage) GetURL(alias string) (string, error) {
 	}
 
 	return resURL, nil
+}
+
+func (s *Storage) GetAll() ([]URL, error) {
+	const op = "storage.sqlite.GetAll"
+	stmt, err := s.db.Prepare(`SELECT alias, url FROM url`)
+	if err != nil {
+		return nil, fmt.Errorf("%s: prepare statement: %w", op, err)
+	}
+
+	var results []URL
+
+	rows, err := stmt.Query()
+	if err != nil {
+		return nil, fmt.Errorf("%s: %w", op, err)
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var u URL
+		if err := rows.Scan(&u.Alias, &u.URL); err != nil {
+			return nil, fmt.Errorf("%s: %w", op, err)
+		}
+		results = append(results, u)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, fmt.Errorf("%s: %w", op, err)
+	}
+
+	return results, nil
 }
 
 func (s *Storage) DeleteURL(alias string) error {
