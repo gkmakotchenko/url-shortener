@@ -15,7 +15,7 @@ type Storage struct {
 
 type URL struct {
 	Alias string `json:"alias"`
-	URL   string `json:"string"`
+	URL   string `json:"url"`
 }
 
 func New(storagePath string) (*Storage, error) {
